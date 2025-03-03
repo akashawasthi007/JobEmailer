@@ -2,6 +2,8 @@ package com.akash.controller;
 
 import java.io.IOException;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +25,7 @@ public class TestController {
     // }
 
     @GetMapping("/")
-    public String requestMethodName() throws IOException {
+    public String requestMethodName() throws IOException, MessagingException {
        return batch.singleMail();
     }
   
