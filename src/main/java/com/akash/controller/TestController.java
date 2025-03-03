@@ -1,5 +1,7 @@
 package com.akash.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,12 +15,16 @@ import com.akash.Batches.Batch;
 public class TestController {
     
     @Autowired
-    private Batch batch;
+    private Batch batch ;
+
+    // @Autowired
+    // public TestController(Batch batch) {
+    //     this.batch = batch;
+    // }
 
     @GetMapping("/")
-    public String requestMethodName() {
-       return batch.run();
+    public String requestMethodName() throws IOException {
+       return batch.singleMail();
     }
-    
-
+  
 }

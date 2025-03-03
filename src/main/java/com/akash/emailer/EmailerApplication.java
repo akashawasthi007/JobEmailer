@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.akash.controller")
+@ComponentScan(basePackages = "com.akash")
 public class EmailerApplication {
 
 	public static void main(String[] args) {
