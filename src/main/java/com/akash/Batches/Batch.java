@@ -1,10 +1,12 @@
 package com.akash.Batches;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.File;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.mail.MessagingException;
@@ -45,7 +47,7 @@ public class Batch implements MailManager {
     
     public String singleMail() throws IOException, MessagingException {
 
-        HashMap<String,String> hMap = getAllHRs(); 
+        LinkedHashMap<String,String> hMap = getAllHRs(); 
 
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -81,26 +83,35 @@ public class Batch implements MailManager {
 
     @SuppressWarnings("null")
     @Override
-    public HashMap<String, String> getAllHRs() throws IOException {
+    public LinkedHashMap<String, String> getAllHRs() throws IOException {
         System.out.println("Enter getAllHRs()");
         String path = "D:\\doc\\HRContacts.xlsx";
         //String path = "D:\\doc\\testiing.xlsx";
-        HashMap<String,String> mp = new HashMap<>();
-         XSSFWorkbook workbook = null;
+        LinkedHashMap<String,String> mp = new LinkedHashMap<>();
+        XSSFWorkbook workbook = null;
+        FileOutputStream outputStream = null;
+        FileInputStream file = null;
         try{
         
-            FileInputStream file = new FileInputStream(new File(path));
+            file = new FileInputStream(new File(path));
             System.out.println(file.getClass());
             workbook = new XSSFWorkbook(file);
 
             Sheet sheet = workbook.getSheetAt(0);
-
+            
             for(Row row : sheet)
-            {
-                mp.put(row.getCell(2).toString(), row.getCell(1).toString());
+            {   
+                System.out.println(row.getCell(3).toString());
+                if(row.getCell(3).toString().equalsIgnoreCase("N"))
+                {
+                    mp.put(row.getCell(2).toString(), row.getCell(1).toString());
+                    row.getCell(3).setCellValue("Y");
+                }
             }
             System.out.println("workbook number of rows "+sheet.getLastRowNum());
             
+            outputStream = new FileOutputStream("D:\\doc\\testiing.xlsx");
+            workbook.write(outputStream);
     
         }
         catch(Exception e)
@@ -109,11 +120,13 @@ public class Batch implements MailManager {
         }
         finally{
             workbook.close();
+            file.close();
+            outputStream.close();
         }
-        System.out.println("Exit getAllHRs()");
+        //System.out.println("Exit getAllHRs() :"+mp.toString());
         return mp;
         //throw new UnsupportedOperationException("Unimplemented method 'getAllHRs'");
     }
-    
+
 }
 
